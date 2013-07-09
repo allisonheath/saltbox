@@ -1,6 +1,16 @@
 base:
   '*':
     - base
-    - java
     - edit.emacs
-    - ngs.*
+
+  'roles:master':
+    - match: grain
+    - ngs.download
+
+  'roles:analysis':
+    - match: grain
+    - java
+    - ngs.bwa
+    - ngs.samtools
+    - ngs.gatk
+    - ngs.picard

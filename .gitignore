@@ -33,3 +33,12 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+#emacs
+*~
+
+#sources
+*.tar.gz
+*.tar.bz2
+*.tar
+*.zip

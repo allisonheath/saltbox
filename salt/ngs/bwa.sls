@@ -3,16 +3,16 @@ include:
 
 untar bwa:
   cmd.run:
-    - name: tar jxvf bwa-0.7.5a.tar.bz2
+    - name: tar jxvf bwa-{{ pillar['ngs_versions']['bwa'] }}.tar.bz2
     - cwd: /usr/local/src
     - watch:
-      - file: /usr/local/src/bwa-0.7.5a.tar.bz2
-    - unless: ls /usr/local/bin/bwa
+      - file: /usr/local/src/bwa-{{ pillar['ngs_versions']['bwa'] }}.tar.bz2
+    - unless: ls /usr/local/src/bwa-{{ pillar['ngs_versions']['bwa'] }}/bwa
 
 build bwa:
   cmd.wait:
     - name: make
-    - cwd: /usr/local/src/bwa-0.7.5a
+    - cwd: /usr/local/src/bwa-{{ pillar['ngs_versions']['bwa'] }}
     - watch:
       - cmd: untar bwa
     - require:
@@ -20,18 +20,9 @@ build bwa:
       - pkg: libncurses
       - pkg: zlib1g-dev
 
-install bwa:
-  cmd.wait:
-    - name: mv /usr/local/src/bwa-0.7.5a/bwa /usr/local/bin
-    - cwd: /usr/local/src/bwa-0.7.5a
-    - watch:
-      - cmd: build bwa
-
-cleanup bwa:
-  cmd.wait:
-    - name: rm -rf /usr/local/src/bwa-0.7.5a
-    - watch:
-      - cmd: install bwa
+/usr/local/bin/bwa:
+  file.symlink:
+    - target: /usr/local/src/bwa-{{ pillar['ngs_versions']['bwa'] }}/bwa
 
 libncurses:
   pkg:
@@ -43,8 +34,19 @@ zlib:
     - name: zlib1g-dev
     - installed
 
-/usr/local/src/bwa-0.7.5a.tar.bz2:
+/usr/local/src/bwa-{{ pillar['ngs_versions']['bwa'] }}:
+  file.directory:
+    - user: root
+    - group: root
+    - mode: 755
+
+/usr/local/src/bwa-{{ pillar['ngs_versions']['bwa'] }}/bwa:
   file.managed:
-     - source: salt://ngs/src/bwa-0.7.5a.tar.bz2
-#    - source: http://sourceforge.net/projects/bio-bwa/files/bwa-0.7.5a.tar.bz2
-#    - source_hash: sha1=3ba4a2df24dc2a2578fb399dc77b3c240a5a18be
+    - user: root
+    - group: root
+    - mode: 755
+    - create: False
+
+/usr/local/src/bwa-{{ pillar['ngs_versions']['bwa'] }}.tar.bz2:
+  file.managed:
+     - source: salt://ngs/src/bwa-{{ pillar['ngs_versions']['bwa'] }}.tar.bz2
