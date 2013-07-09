@@ -9,6 +9,7 @@ unzip picard:
       - file: /usr/local/src/picard-tools-{{ pillar['ngs_versions']['picard'] }}.zip
     - require: 
       - pkg: unzip
+      - cmd: update jdk
     - unless: ls /opt/picard-tools-{{ pillar['ngs_versions']['picard'] }}
 
 clean picard:
