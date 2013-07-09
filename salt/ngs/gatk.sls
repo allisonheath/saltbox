@@ -9,7 +9,7 @@ untar gatk:
       - file: /usr/local/src/GenomeAnalysisTK-{{ pillar['ngs_versions']['gatk'] }}.tar.bz2
     - require: 
       - cmd: update jdk
-    - unless: ls /opt/gatk/GenomeAnalysisTK-{{ pillar['ngs_versions']['gatk'] }}/GenomeAnalysisTK.jar
+    - unless: ls /opt/GenomeAnalysisTK-{{ pillar['ngs_versions']['gatk'] }}/GenomeAnalysisTK.jar
 
 clean gatk:
   cmd.wait:
