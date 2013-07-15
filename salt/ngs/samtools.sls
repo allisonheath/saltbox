@@ -10,6 +10,8 @@ build samtools:
   cmd.wait:
     - name: make
     - cwd: /usr/local/src/samtools-{{ pillar['ngs_versions']['samtools'] }}
+    - require:
+      - pkg: build-essential
     - watch:
       - cmd: untar samtools
 
